@@ -2,23 +2,23 @@ IDIR=include
 CXX=g++
 CXX_FLAGS=-I$(IDIR) -std=c++11
 
-ODIR=obj
+ODIR=bin
 LDIR =lib
 SDIR=src
 
 LIBS=-lm -lpthread 
 
-_DEPS = Bat.h
+_DEPS = Bat.h PriorityQueue.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o Bat.o 
+_OBJ = main.o Bat.o PriorityQueue.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS) | $(ODIR)
 	$(CXX) -c -o $@ $< $(CXX_FLAGS)
 
-main: $(OBJ)
+batman: $(OBJ)
 	$(CXX) -o $@ $^ $(CXX_FLAGS) $(LIBS)
 
 .PHONY: clean

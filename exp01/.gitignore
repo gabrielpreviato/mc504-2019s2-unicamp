@@ -1,0 +1,7 @@
+bin/
+main
+batman
+.idea/
+.vscode/
+cmake-build-debug/
+CMakeLists.txt
