@@ -19,7 +19,7 @@ class Pagemap {
     int _pid;  
     // char _maps_file[BUFSIZ];
     std::string _pagemap_file; 
-    FILE* _file_stream;
+    int _file_stream;
 
     Maps _maps;
 
