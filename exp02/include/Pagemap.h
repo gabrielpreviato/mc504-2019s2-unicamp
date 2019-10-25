@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+#include "Maps.h"
+
 
 class Pagemap {
  private:
@@ -18,11 +20,13 @@ class Pagemap {
     // char _maps_file[BUFSIZ];
     std::string _pagemap_file; 
 
+    Maps _maps;
+
  public:
+    Pagemap(int pid);
+
     void read_pagemap_file();
     void print_pagemap();
-
-    Pagemap(int pid) : _pid(pid) {}
 };
 
 #endif  // EXP01_INCLUDE_PAGEMAP_H_

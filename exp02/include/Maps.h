@@ -17,9 +17,14 @@ class Maps {
     int _pid;  
     // char _maps_file[BUFSIZ];
     std::string _maps_file; 
+    std::vector<std::string> _maps_virtual_pages;
 
  public:
-    void read_map_file();
+    Maps(int pid) : _pid(pid) {}
+    
+    void read_maps_file();
+    void parse_maps_file();
+    void print_maps();
 };
 
 #endif  // EXP01_INCLUDE_MAPS_H_
