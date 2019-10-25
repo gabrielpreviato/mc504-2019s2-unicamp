@@ -1,8 +1,14 @@
 #include "Pagemap.h"
 #include <fstream>
+#include <cstdio>
+#include <unistd.h>
 
+#define PAGE_SIZE 0x1000
 
-Pagemap::Pagemap(int pid) : _pid(pid), _maps(pid) {}
+    
+Pagemap::Pagemap(int pid) : _pid(pid), _maps(pid), 
+                            _file_stream(fopen((std::string("/proc/") + std::to_string(_pid) + std::string("/pagemap")).c_str(), 'r'))
+                            {}
 
 void Pagemap::read_pagemap_file() {
     std::cout << "Before reading maps." << std::endl;
@@ -12,9 +18,14 @@ void Pagemap::read_pagemap_file() {
 
     std::cout << "Done reading maps." << std::endl;
 
-    // std::ifstream file_stream(std::string("/proc/") + std::to_string(_pid) + std::string("/pagemap"));
-    // _pagemap_file = std::string((std::istreambuf_iterator<char>(file_stream)), std::istreambuf_iterator<char>());
-
+    
+    for (auto range : _maps._maps_virtual_ranges) {
+        for (uint64_t i = range.first; i < range.second; i += PAGE_SIZE) {
+            uint64_t page_index = i / PAGE_SIZE;
+            std::string pagemap(std::istreambuf_iterator<char>(_file_stream) + page_index,
+                                std::istreambuf_iterator<char>(_file_stream) + page_index + 1);
+        }
+    }
     return;
 }
 

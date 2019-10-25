@@ -20,6 +20,8 @@ class Maps {
     std::vector<std::string> _maps_virtual_pages;
 
  public:
+    std::vector<std::pair<uint64_t, uint64_t>> _maps_virtual_ranges;
+    
     Maps(int pid) : _pid(pid) {}
     
     void read_maps_file();
