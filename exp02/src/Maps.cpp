@@ -1,3 +1,8 @@
+// Copyright 2019 Gabriel Previato @ UNICAMP.
+//
+// All components of this repository are licensed under the MIT License.
+// See LICENSE.txt for details.
+
 #include "Maps.h"
 #include <fstream>
 
@@ -7,7 +12,7 @@
 void Maps::read_maps_file() {
     std::ifstream file_stream(std::string("/proc/") + std::to_string(_pid) + std::string("/maps"));
     _maps_file = std::string((std::istreambuf_iterator<char>(file_stream)), std::istreambuf_iterator<char>());
-    
+
     return;
 }
 
@@ -29,7 +34,7 @@ void Maps::parse_maps_file() {
         last = str.substr(minus_pos + 1);
 
         _maps_virtual_ranges.push_back({std::stoull(first, 0, 16), std::stoull(last, 0, 16)});
-    
+
         _maps_virtual_pages.push_back(str);
 
         _maps_file.erase(0, pos + delimiter.length());
@@ -42,6 +47,6 @@ void Maps::print_maps() {
     for (auto pair : _maps_virtual_ranges) {
         std::cout << pair.first << '-' << pair.second << std::endl;
     }
-    
+
     return;
 }

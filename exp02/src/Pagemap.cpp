@@ -1,9 +1,16 @@
+// Copyright 2019 Gabriel Previato @ UNICAMP.
+//
+// All components of this repository are licensed under the MIT License.
+// See LICENSE.txt for details.
+
 #include "Pagemap.h"
+
+#include <unistd.h>
+#include <fcntl.h>
+
 #include <fstream>
 #include <sstream>
 #include <cstdio>
-#include <unistd.h>
-#include <fcntl.h>
 
 #define PAGE_SIZE 0x1000
 

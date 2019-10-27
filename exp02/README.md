@@ -1,13 +1,13 @@
 # MC504 - 2019s2
-## Exp 01
+## Exp 02
 
 ### Build
-To build the BATMAN just run make in the exp01 root directory.
-The executable "batman" will be generated.
+To build the PATV (Physical Address Translation Viewer) just run make in the exp02
+root directory. The executable "patv" will be generated.
 
 ### Running
-To run "batman" simply executes (e.g. `./batman`) the executable.
+To run PATV simply executes (e.g. `./patv`) the executable.
 
 ### Input
-The input must end with a "q" character in order to stop the execution off all threads. A example of input
-can be seen in the file test1.in.
+The input must be the process to have the pages translated. For correct output, running
+as root is strongly recommended.
