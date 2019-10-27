@@ -23,7 +23,7 @@ class Pagemap {
 
     Maps _maps;
     std::vector<std::pair<uint64_t, uint64_t>> _present_pages;
-    std::vector<uint64_t> _missed_pages;
+    std::vector<std::pair<uint64_t, bool>> _missed_pages;
 
  public:
     explicit Pagemap(int pid);

@@ -43,10 +43,12 @@ void Pagemap::read_pagemap_file() {
                 std::cout << "EOF" << std::endl;
             } else if (ret = sizeof(page_frame)) {
                 bool page_present = page_frame & (static_cast<uint64_t>(1) << 63);
+                bool page_swapped = page_frame & (static_cast<uint64_t>(1) << 62);
+
                 if (page_present) {
                     _present_pages.push_back({i, page_frame});
                 } else {
-                    _missed_pages.push_back(i);
+                    _missed_pages.push_back({i, page_swapped});
                 }
             } else {
                 exit(-2);
@@ -62,8 +64,13 @@ void Pagemap::print_pagemap() {
     std::cout << "### NON PRESENT PAGES ###" << std::endl;
     for (auto page : _missed_pages) {
         std::stringstream page_index_stream;
-        page_index_stream << std::hex << page;
-        std::cout << "Virtual Page: 0x" << page_index_stream.str() << std::endl;
+        page_index_stream << std::hex << page.first;
+        std::cout << "Virtual Page: 0x" << page_index_stream.str();
+
+        if (page.second) {
+            std::cout << " SWAPPED";
+        }
+        std::cout << std::endl;
     }
 
     // Then we print the present pages
