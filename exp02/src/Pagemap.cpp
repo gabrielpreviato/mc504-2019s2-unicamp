@@ -26,8 +26,6 @@ void Pagemap::read_pagemap_file() {
 
     for (auto range : _maps._maps_virtual_ranges) {
         for (uint64_t i = range.first; i < range.second; i += PAGE_SIZE) {
-            // std::cout << "i: " << i << ", range: " << range.first << '-' << range.second << std::endl;
-
             uint64_t page_frame;
             uint64_t page_index = i / PAGE_SIZE * sizeof(page_frame);
 
@@ -37,17 +35,12 @@ void Pagemap::read_pagemap_file() {
             } else if (ret == 0) {
                 std::cout << "EOF" << std::endl;
             } else if (ret = sizeof(page_frame)) {
-                std::stringstream page_index_stream;
-                page_index_stream << std::hex << i;
-                std::cout << "Virtual Page: 0x" << page_index_stream.str();
-
                 bool page_present = page_frame & (static_cast<uint64_t>(1) << 63);
                 if (page_present) {
-                    std::stringstream page_frame_stream;
-                    page_frame_stream << std::hex << page_frame;
-                    std::cout << " -> " << "PFN: 0x" << page_frame_stream.str();
+                    _present_pages.push_back({i, page_frame});
+                } else {
+                    _missed_pages.push_back(i);
                 }
-                std::cout << std::endl;
             } else {
                 exit(-2);
             }
@@ -58,8 +51,25 @@ void Pagemap::read_pagemap_file() {
 }
 
 void Pagemap::print_pagemap() {
-    // _maps.print_maps();
-    // std::cout << _pagemap_file << std::endl;
+    // First we print the non present pages
+    std::cout << "### NON PRESENT PAGES ###" << std::endl;
+    for (auto page : _missed_pages) {
+        std::stringstream page_index_stream;
+        page_index_stream << std::hex << page;
+        std::cout << "Virtual Page: 0x" << page_index_stream.str() << std::endl;
+    }
+
+    // Then we print the present pages
+    std::cout << "### PRESENT PAGES ###" << std::endl;
+    for (auto page_pair : _present_pages) {
+        std::stringstream page_index_stream;
+        page_index_stream << std::hex << page_pair.first;
+        std::cout << "Virtual Page: 0x" << page_index_stream.str();
+
+        std::stringstream page_frame_stream;
+        page_frame_stream << std::hex << page_pair.second % (static_cast<uint64_t>(1) << 53);
+        std::cout << " -> " << "PFN: 0x" << page_frame_stream.str() << std::endl;
+    }
 
     return;
 }
